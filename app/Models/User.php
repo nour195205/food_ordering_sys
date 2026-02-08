@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
     ];
 
     /**
@@ -44,5 +45,20 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    // اليوزر ليه بروفايل واحد فيه بياناته
+    public function profile() {
+        return $this->hasOne(UserProfile::class);
+    }
+
+    // لو هو ستيف، هيكون ليه صلاحيات كتير
+    public function staffPermissions() {
+        return $this->hasMany(StaffPermission::class);
+    }
+
+    // Function سهلة تتشيك بيها على الصلاحية في الـ Blade أو الـ Controller
+    public function hasPermission($permission) {
+        return $this->staffPermissions()->where('permission_key', $permission)->exists();
     }
 }
