@@ -2,10 +2,26 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MenuController; // تأكد إن السطر ده موجود فوق خالص
+use App\Http\Controllers\CartController;
+
 
 Route::get('/', function () {
     return view('welcome');
 });
+
+//-------------------Menu------------------//
+
+Route::get('/menu', [MenuController::class, 'index'])->name('menu.index');
+
+
+
+Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+Route::post('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
+
+
+//-------------------Dashboard------------------//
 
 Route::get('/dashboard', function () {
     return view('dashboard');
