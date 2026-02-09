@@ -1,8 +1,7 @@
-@extends('layouts.app')
+@extends('layouts.naa')
 
 @section('content')
-<div class="container mx-auto py-8">
-    @foreach($categories as $category)
+    @forelse($categories as $category)
         <h2 class="text-3xl font-bold text-center my-8 text-red-600 uppercase tracking-widest">
             {{ $category->name }}
         </h2>
@@ -46,6 +45,11 @@
                 </div>
             @endforeach
         </div>
-    @endforeach
+    @empty
+        <div class="text-center py-10">
+            <h2 class="text-2xl font-bold text-gray-600">لا توجد أصناف في القائمة حالياً</h2>
+            <p class="text-gray-500 mt-2">يرجى إضافة تصنيفات ومنتجات من لوحة التحكم.</p>
+        </div>
+    @endforelse
 </div>
 @endsection
