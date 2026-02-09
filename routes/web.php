@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MenuController; // تأكد إن السطر ده موجود فوق خالص
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\OrderController;
 
 
 Route::get('/', function () {
@@ -19,6 +20,13 @@ Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::post('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
 
 Route::post('/cart/toggle-combo/{key}', [CartController::class, 'toggleCombo'])->name('cart.toggleCombo');
+
+
+Route::middleware('auth')->group(function () {
+    Route::get('/checkout', [OrderController::class, 'checkout'])->name('checkout');
+    Route::post('/checkout/store', [OrderController::class, 'store'])->name('order.store');
+    Route::get('/order-success', [OrderController::class, 'success'])->name('order.success');
+});
 
 
 //-------------------Dashboard------------------//
