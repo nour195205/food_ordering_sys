@@ -1,44 +1,51 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\MenuController; // تأكد إن السطر ده موجود فوق خالص
+use App\Http\Controllers\MenuController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\UserProfileController;
 
+use Illuminate\Support\Facades\Route;
 
+// الصفحة الرئيسية (Welcome)
 Route::get('/', function () {
     return view('welcome');
 });
 
-//-------------------Menu------------------//
-
+// مسارات المنيو (متاحة للجميع)
 Route::get('/menu', [MenuController::class, 'index'])->name('menu.index');
 
-Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
-Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
-Route::post('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
+// مسارات سلة المشتريات (Session based)
+Route::prefix('cart')->group(function () {
+    Route::get('/', [CartController::class, 'index'])->name('cart.index');
+    Route::post('/add', [CartController::class, 'add'])->name('cart.add');
+    Route::post('/toggle-combo/{key}', [CartController::class, 'toggleCombo'])->name('cart.toggleCombo');
+    Route::post('/remove/{key}', [CartController::class, 'remove'])->name('cart.remove');
+});
 
-Route::post('/cart/toggle-combo/{key}', [CartController::class, 'toggleCombo'])->name('cart.toggleCombo');
-
-
+// المسارات التي تتطلب تسجيل دخول (Middleware Auth)
 Route::middleware('auth')->group(function () {
+    
+    // إتمام الطلب (Checkout)
     Route::get('/checkout', [OrderController::class, 'checkout'])->name('checkout');
     Route::post('/checkout/store', [OrderController::class, 'store'])->name('order.store');
     Route::get('/order-success', [OrderController::class, 'success'])->name('order.success');
-});
 
+    // حسابي الشخصي (البروفايل الجديد اللي عملناه)
+    Route::get('/my-account', [UserProfileController::class, 'index'])->name('user.profile');
+    Route::post('/my-account/update', [UserProfileController::class, 'update'])->name('profile.update');
 
-//-------------------Dashboard------------------//
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::middleware('auth')->group(function () {
+    // مسارات Breeze الأصلية (لو حبيت ترجع لها)
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update_breeze');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    
+    // صفحة الـ Dashboard الأساسية
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
 });
 
+// ملف روابط المصادقة (Login, Register, etc)
 require __DIR__.'/auth.php';
