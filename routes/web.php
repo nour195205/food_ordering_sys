@@ -6,6 +6,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\AdminProductController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -28,6 +29,15 @@ Route::prefix('cart')->group(function () {
 
 // المسارات التي تتطلب تسجيل دخول (Middleware Auth)
 Route::middleware('auth')->group(function () {
+    Route::resource('admin/products', AdminProductController::class)->names([
+    'index' => 'admin.products.index',
+    'create' => 'admin.products.create',
+    'store' => 'admin.products.store',
+    'edit' => 'admin.products.edit',
+    'update' => 'admin.products.update',
+    'destroy' => 'admin.products.destroy',
+]);
+
     Route::post('/admin/orders/{id}/update-status', [DashboardController::class, 'updateStatus'])->name('admin.orders.updateStatus');
 Route::get('/admin/orders/{id}', [DashboardController::class, 'showOrder'])->name('admin.orders.show');
 Route::get('/admin/orders/{id}/edit', [DashboardController::class, 'editOrder'])->name('admin.orders.edit');

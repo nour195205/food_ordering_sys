@@ -74,7 +74,7 @@
                             <a href="{{ route('admin.orders.edit', $order->id) }}" class="text-blue-600 hover:underline text-xs ml-2">
                                 تعديل الأوردر
                             </a>
-                            <a href="{{ route('admin.orders.show', $order->id) }}" class="inline-block bg-black text-white px-4 py-1 rounded-lg text-xs hover:bg-gray-800 transition" style="color: black;">
+                            <a href="{{ route('admin.orders.show', $order->id) }}" class="inline-block bg-black text-white px-4 py-1 rounded-lg text-xs hover:bg-gray-800 transition">
                                 عرض التفاصيل
                             </a>
                         </td>
