@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\UserProfile;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -33,6 +34,17 @@ class ProfileController extends Controller
         }
 
         $request->user()->save();
+
+        // Update or Create UserProfile for extra details
+        UserProfile::updateOrCreate(
+            ['user_id' => $request->user()->id],
+            [
+                'phone' => $request->input('phone'),
+                'alt_phone' => $request->input('alt_phone'),
+                'address' => $request->input('address'),
+                'city' => 'Damanhour', // Default
+            ]
+        );
 
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }

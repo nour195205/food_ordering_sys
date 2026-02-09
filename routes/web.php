@@ -32,13 +32,13 @@ Route::middleware('auth')->group(function () {
     Route::post('/checkout/store', [OrderController::class, 'store'])->name('order.store');
     Route::get('/order-success', [OrderController::class, 'success'])->name('order.success');
 
-    // حسابي الشخصي (البروفايل الجديد اللي عملناه)
-    Route::get('/my-account', [UserProfileController::class, 'index'])->name('user.profile');
-    Route::post('/my-account/update', [UserProfileController::class, 'update'])->name('profile.update');
+    // توجيه رابط حسابي القديم للرابط الجديد (Breeze)
+    Route::redirect('/my-account', '/profile');
+    Route::redirect('/my-account/update', '/profile');
 
     // مسارات Breeze الأصلية (لو حبيت ترجع لها)
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update_breeze');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     
     // صفحة الـ Dashboard الأساسية

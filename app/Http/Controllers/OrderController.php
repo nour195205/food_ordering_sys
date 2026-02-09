@@ -31,14 +31,28 @@ class OrderController extends Controller
     $cart = session()->get('cart', []);
     if (empty($cart)) return redirect()->route('menu.index');
 
-    $request->validate([
-        'customer_name' => 'required|string|max:255',
-        'phone' => 'required|string',
-        'address' => 'required|string',
-    ]);
+        if ($request->input('delivery_option') === 'saved') {
+            $request->validate([
+                'customer_name' => 'required|string|max:255',
+            ]);
+            
+            // Use saved details
+            $phone = $request->input('saved_phone');
+            $address = $request->input('saved_address');
+        } else {
+            $request->validate([
+                'customer_name' => 'required|string|max:255',
+                'phone' => 'required|string',
+                'address' => 'required|string',
+            ]);
+
+            // Use new details
+            $phone = $request->phone;
+            $address = $request->address;
+        }
 
     // التعديل هنا: خلي الـ transaction ترجع قيمة الـ order
-    $order = DB::transaction(function () use ($request, $cart) {
+    $order = DB::transaction(function () use ($request, $cart, $phone, $address) {
         
         $totalPrice = 0;
         foreach($cart as $item) {
@@ -48,8 +62,8 @@ class OrderController extends Controller
         $order = Order::create([
             'user_id' => auth()->id(),
             'customer_name' => $request->customer_name,
-            'phone' => $request->phone,
-            'address' => $request->address,
+            'phone' => $phone,
+            'address' => $address,
             'total_price' => $totalPrice,
             'status' => 'pending',
         ]);
