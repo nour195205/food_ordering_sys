@@ -7,6 +7,8 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AdminProductController;
+use App\Http\Controllers\AdminCategoryController;
+
 
 use Illuminate\Support\Facades\Route;
 
@@ -29,6 +31,14 @@ Route::prefix('cart')->group(function () {
 
 // المسارات التي تتطلب تسجيل دخول (Middleware Auth)
 Route::middleware('auth')->group(function () {
+
+Route::resource('admin/categories', AdminCategoryController::class)->names([
+    'index' => 'admin.categories.index',
+    'store' => 'admin.categories.store',
+    'update' => 'admin.categories.update',
+    'destroy' => 'admin.categories.destroy',
+]);
+
     Route::resource('admin/products', AdminProductController::class)->names([
     'index' => 'admin.products.index',
     'create' => 'admin.products.create',
