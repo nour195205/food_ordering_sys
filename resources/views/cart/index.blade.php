@@ -31,7 +31,10 @@
                     </div>
 
                     <div class="flex items-center gap-4">
-                        <span class="font-bold">x{{ $item['quantity'] }}</span>
+                        <form action="{{ route('cart.update', $key) }}" method="POST" class="flex items-center">
+                            @csrf
+                            <input type="number" name="quantity" value="{{ $item['quantity'] }}" min="1" class="w-16 text-center border-gray-300 rounded-lg p-1 text-sm focus:ring-red-500 focus:border-red-500" onchange="this.form.submit()">
+                        </form>
                         <form action="{{ route('cart.remove', $key) }}" method="POST">
                             @csrf
                             <button class="text-gray-400 hover:text-red-600 transition">

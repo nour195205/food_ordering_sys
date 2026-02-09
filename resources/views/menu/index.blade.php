@@ -34,6 +34,19 @@
                                 @endforeach
                             </select>
 
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="w-1/3">
+                                    <label class="text-xs text-gray-500 block mb-1">الكمية</label>
+                                    <input type="number" name="quantity" value="1" min="1" class="w-full rounded-lg border-gray-300 text-center p-2">
+                                </div>
+                                <div class="w-2/3">
+                                    <label class="flex items-center gap-2 cursor-pointer bg-gray-50 border border-gray-200 rounded-lg p-2 h-[42px] mt-[18px]">
+                                        <input type="checkbox" name="is_combo" class="w-5 h-5 text-red-600 rounded focus:ring-red-500 accent-red-600">
+                                        <span class="text-sm font-bold text-gray-700">كومبو (+45) 🍟🥤</span>
+                                    </label>
+                                </div>
+                            </div>
+
                             <button type="submit" class="w-full inline-flex justify-center items-center px-4 py-2 text-white bg-red-600 rounded-lg hover:bg-red-700 font-bold">
                                 أضف للسلة
                                 <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">

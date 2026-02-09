@@ -21,6 +21,7 @@ Route::get('/menu', [MenuController::class, 'index'])->name('menu.index');
 Route::prefix('cart')->group(function () {
     Route::get('/', [CartController::class, 'index'])->name('cart.index');
     Route::post('/add', [CartController::class, 'add'])->name('cart.add');
+    Route::post('/update/{key}', [CartController::class, 'update'])->name('cart.update');
     Route::post('/toggle-combo/{key}', [CartController::class, 'toggleCombo'])->name('cart.toggleCombo');
     Route::post('/remove/{key}', [CartController::class, 'remove'])->name('cart.remove');
 });
