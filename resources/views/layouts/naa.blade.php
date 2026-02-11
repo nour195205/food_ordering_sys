@@ -22,6 +22,7 @@
                 <!-- Desktop Menu -->
                 <div class="hidden md:flex items-center gap-6">
                     <a href="{{ route('menu.index') }}" class="text-gray-700 hover:text-red-600 font-bold transition">المنيو</a>
+                    <a href="{{ route('about.index') }}" class="text-gray-700 hover:text-red-600 font-bold transition">من نحن</a>
                     
                     @auth
                         @if(Auth::user()->role === 'admin' || Auth::user()->hasPermission('view_reports'))
@@ -93,6 +94,7 @@
             <!-- Mobile Menu -->
             <div x-show="open" class="md:hidden mt-4 space-y-2 border-t pt-4" style="display: none;">
                 <a href="{{ route('menu.index') }}" class="block py-2 text-gray-700 hover:text-red-600 font-bold">المنيو 🍔</a>
+                <a href="{{ route('about.index') }}" class="block py-2 text-gray-700 hover:text-red-600 font-bold">من نحن ℹ️</a>
                 @auth
                     @if(Auth::user()->role === 'admin' || Auth::user()->hasPermission('view_reports'))
                         <a href="{{ route('admin.dashboard') }}" class="block py-2 text-gray-700 hover:text-red-600 font-bold">لوحة التحكم ⚙️</a>

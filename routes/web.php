@@ -20,6 +20,7 @@ Route::get('/', function () {
 
 // مسارات المنيو (متاحة للجميع)
 Route::get('/menu', [MenuController::class, 'index'])->name('menu.index');
+Route::get('/about-us', [App\Http\Controllers\AboutController::class, 'index'])->name('about.index');
 
 // مسارات سلة المشتريات (Session based)
 Route::prefix('cart')->group(function () {
@@ -36,6 +37,10 @@ Route::prefix('cart')->group(function () {
 Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
     // إدارة الصلاحيات للموظفين (للأدمن فقط) - أو ممكن نعملها permission اسمها manage_staff
     Route::resource('staff', StaffManagementController::class)->middleware('permission:manage_staff'); // لازم تضيف manage_staff في الـ availablePermissions
+
+    // إعدادات الموقع
+    Route::get('/settings', [App\Http\Controllers\SettingsController::class, 'index'])->name('settings.index')->middleware('permission:manage_settings');
+    Route::post('/settings', [App\Http\Controllers\SettingsController::class, 'update'])->name('settings.update')->middleware('permission:manage_settings');
 });
 
 // المسارات التي تتطلب تسجيل دخول (Middleware Auth)

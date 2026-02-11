@@ -28,6 +28,7 @@ class StaffManagementController extends Controller
             'manage_products' => 'إدارة المنتجات',
             'manage_categories' => 'إدارة الأقسام',
             'view_reports' => 'عرض التقارير',
+            'manage_settings' => 'إعدادات الموقع ⚙️',
         ];
 
         // بنجيب صلاحيات اليوزر الحالية كمصفوفة بسيطة
