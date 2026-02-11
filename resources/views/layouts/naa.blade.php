@@ -26,6 +26,8 @@
                     @auth
                         @if(Auth::user()->role === 'admin' || Auth::user()->role === 'staff')
                             <a href="{{ route('admin.dashboard') }}" class="text-gray-700 hover:text-red-600 font-bold transition">لوحة التحكم ⚙️</a>
+                            <a href="{{ url('admin/categories') }}" class="text-gray-700 hover:text-red-600 font-bold transition">التصنيفات</a>
+                            <a href="{{ url('admin/products') }}" class="text-gray-700 hover:text-red-600 font-bold transition">المنتجات</a>
                         @endif
 
                         <a href="{{ route('cart.index') }}" class="text-gray-700 hover:text-red-600 font-bold transition relative">
