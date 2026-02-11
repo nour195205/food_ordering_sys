@@ -13,10 +13,8 @@ use App\Http\Controllers\StaffManagementController;
 
 use Illuminate\Support\Facades\Route;
 
-// الصفحة الرئيسية (Welcome)
-Route::get('/', function () {
-    return view('welcome');
-});
+// الصفحة الرئيسية (Menu)
+Route::get('/', [MenuController::class, 'index'])->name('home');
 
 // مسارات المنيو (متاحة للجميع)
 Route::get('/menu', [MenuController::class, 'index'])->name('menu.index');
