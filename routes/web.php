@@ -8,6 +8,7 @@ use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AdminProductController;
 use App\Http\Controllers\AdminCategoryController;
+use App\Http\Controllers\StaffManagementController;
 
 
 use Illuminate\Support\Facades\Route;
@@ -29,31 +30,52 @@ Route::prefix('cart')->group(function () {
     Route::post('/remove/{key}', [CartController::class, 'remove'])->name('cart.remove');
 });
 
+
+// routes/web.php
+
+Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+    // إدارة الصلاحيات للموظفين (للأدمن فقط) - أو ممكن نعملها permission اسمها manage_staff
+    Route::resource('staff', StaffManagementController::class)->middleware('permission:manage_staff'); // لازم تضيف manage_staff في الـ availablePermissions
+});
+
 // المسارات التي تتطلب تسجيل دخول (Middleware Auth)
 Route::middleware('auth')->group(function () {
 
-Route::resource('admin/categories', AdminCategoryController::class)->names([
-    'index' => 'admin.categories.index',
-    'store' => 'admin.categories.store',
-    'update' => 'admin.categories.update',
-    'destroy' => 'admin.categories.destroy',
-]);
+    Route::resource('admin/categories', AdminCategoryController::class)->names([
+        'index' => 'admin.categories.index',
+        'store' => 'admin.categories.store',
+        'update' => 'admin.categories.update',
+        'destroy' => 'admin.categories.destroy',
+    ])->middleware('permission:manage_categories');
 
     Route::resource('admin/products', AdminProductController::class)->names([
-    'index' => 'admin.products.index',
-    'create' => 'admin.products.create',
-    'store' => 'admin.products.store',
-    'edit' => 'admin.products.edit',
-    'update' => 'admin.products.update',
-    'destroy' => 'admin.products.destroy',
-]);
+        'index' => 'admin.products.index',
+        'create' => 'admin.products.create',
+        'store' => 'admin.products.store',
+        'edit' => 'admin.products.edit',
+        'update' => 'admin.products.update',
+        'destroy' => 'admin.products.destroy',
+    ])->middleware('permission:manage_products');
 
-    Route::post('/admin/orders/{id}/update-status', [DashboardController::class, 'updateStatus'])->name('admin.orders.updateStatus');
-Route::get('/admin/orders/{id}', [DashboardController::class, 'showOrder'])->name('admin.orders.show');
-Route::get('/admin/orders/{id}/edit', [DashboardController::class, 'editOrder'])->name('admin.orders.edit');
-Route::put('/admin/orders/{id}/update', [DashboardController::class, 'updateOrder'])->name('admin.orders.update');
+    Route::post('/admin/orders/{id}/update-status', [DashboardController::class, 'updateStatus'])
+        ->name('admin.orders.updateStatus')
+        ->middleware('permission:manage_orders');
 
-    Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+    Route::get('/admin/orders/{id}', [DashboardController::class, 'showOrder'])
+        ->name('admin.orders.show')
+        ->middleware('permission:manage_orders'); // أو view_orders لو حابب تفصل العرض عن التعديل
+
+    Route::get('/admin/orders/{id}/edit', [DashboardController::class, 'editOrder'])
+        ->name('admin.orders.edit')
+        ->middleware('permission:manage_orders');
+
+    Route::put('/admin/orders/{id}/update', [DashboardController::class, 'updateOrder'])
+        ->name('admin.orders.update')
+        ->middleware('permission:manage_orders');
+
+    Route::get('/admin/dashboard', [DashboardController::class, 'index'])
+        ->name('admin.dashboard')
+        ->middleware('permission:view_reports'); // أو view_dashboard
     
     // إتمام الطلب (Checkout)
     Route::get('/checkout', [OrderController::class, 'checkout'])->name('checkout');
