@@ -29,12 +29,24 @@
                             <a href="{{ route('admin.dashboard') }}" class="text-gray-700 hover:text-red-600 font-bold transition">لوحة التحكم ⚙️</a>
                         @endif
                         
+                        @if(Auth::user()->role === 'admin' || Auth::user()->hasPermission('manage_orders'))
+                            <a href="{{ route('admin.orders.index') }}" class="text-gray-700 hover:text-red-600 font-bold transition">الطلبات</a>
+                        @endif
+
                         @if(Auth::user()->role === 'admin' || Auth::user()->hasPermission('manage_categories'))
-                            <a href="{{ url('admin/categories') }}" class="text-gray-700 hover:text-red-600 font-bold transition">التصنيفات</a>
+                            <a href="{{ route('admin.categories.index') }}" class="text-gray-700 hover:text-red-600 font-bold transition">التصنيفات</a>
                         @endif
                         
                         @if(Auth::user()->role === 'admin' || Auth::user()->hasPermission('manage_products'))
-                            <a href="{{ url('admin/products') }}" class="text-gray-700 hover:text-red-600 font-bold transition">المنتجات</a>
+                            <a href="{{ route('admin.products.index') }}" class="text-gray-700 hover:text-red-600 font-bold transition">المنتجات</a>
+                        @endif
+
+                        @if(Auth::user()->role === 'admin' || Auth::user()->hasPermission('manage_staff'))
+                            <a href="{{ route('admin.staff.index') }}" class="text-gray-700 hover:text-red-600 font-bold transition">الموظفين</a>
+                        @endif
+
+                        @if(Auth::user()->role === 'admin' || Auth::user()->hasPermission('manage_settings'))
+                            <a href="{{ route('admin.settings.index') }}" class="text-gray-700 hover:text-red-600 font-bold transition">الإعدادات</a>
                         @endif
 
                         <a href="{{ route('cart.index') }}" class="text-gray-700 hover:text-red-600 font-bold transition relative">
@@ -99,9 +111,25 @@
                     @if(Auth::user()->role === 'admin' || Auth::user()->hasPermission('view_reports'))
                         <a href="{{ route('admin.dashboard') }}" class="block py-2 text-gray-700 hover:text-red-600 font-bold">لوحة التحكم ⚙️</a>
                     @endif
+
+                    @if(Auth::user()->role === 'admin' || Auth::user()->hasPermission('manage_orders'))
+                        <a href="{{ route('admin.orders.index') }}" class="block py-2 text-gray-700 hover:text-red-600 font-bold">الطلبات 📝</a>
+                    @endif
+
+                    @if(Auth::user()->role === 'admin' || Auth::user()->hasPermission('manage_categories'))
+                        <a href="{{ route('admin.categories.index') }}" class="block py-2 text-gray-700 hover:text-red-600 font-bold">التصنيفات 📂</a>
+                    @endif
                     
                     @if(Auth::user()->role === 'admin' || Auth::user()->hasPermission('manage_products'))
-                        <a href="{{ url('admin/products') }}" class="block py-2 text-gray-700 hover:text-red-600 font-bold">المنتجات 📦</a>
+                        <a href="{{ route('admin.products.index') }}" class="block py-2 text-gray-700 hover:text-red-600 font-bold">المنتجات 📦</a>
+                    @endif
+
+                    @if(Auth::user()->role === 'admin' || Auth::user()->hasPermission('manage_staff'))
+                        <a href="{{ route('admin.staff.index') }}" class="block py-2 text-gray-700 hover:text-red-600 font-bold">الموظفين 👥</a>
+                    @endif
+
+                    @if(Auth::user()->role === 'admin' || Auth::user()->hasPermission('manage_settings'))
+                        <a href="{{ route('admin.settings.index') }}" class="block py-2 text-gray-700 hover:text-red-600 font-bold">الإعدادات ⚙️</a>
                     @endif
                     <a href="{{ route('cart.index') }}" class="block py-2 text-gray-700 hover:text-red-600 font-bold">السلة 🛒</a>
                     <a href="{{ route('profile.edit') }}" class="block py-2 text-gray-700 hover:text-red-600 font-bold">حسابي 👤</a>

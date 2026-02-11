@@ -62,21 +62,12 @@ Route::middleware('auth')->group(function () {
         'destroy' => 'admin.products.destroy',
     ])->middleware('permission:manage_products');
 
-    Route::post('/admin/orders/{id}/update-status', [DashboardController::class, 'updateStatus'])
-        ->name('admin.orders.updateStatus')
-        ->middleware('permission:manage_orders');
-
-    Route::get('/admin/orders/{id}', [DashboardController::class, 'showOrder'])
-        ->name('admin.orders.show')
-        ->middleware('permission:manage_orders'); // أو view_orders لو حابب تفصل العرض عن التعديل
-
-    Route::get('/admin/orders/{id}/edit', [DashboardController::class, 'editOrder'])
-        ->name('admin.orders.edit')
-        ->middleware('permission:manage_orders');
-
-    Route::put('/admin/orders/{id}/update', [DashboardController::class, 'updateOrder'])
-        ->name('admin.orders.update')
-        ->middleware('permission:manage_orders');
+    // إدارة الطلبات (Admin Orders)
+    Route::controller(App\Http\Controllers\AdminOrderController::class)->prefix('admin/orders')->name('admin.orders.')->middleware('permission:manage_orders')->group(function () {
+        Route::get('/', 'index')->name('index'); // صفحة كل الطلبات
+        Route::get('/{id}', 'show')->name('show'); // تفاصيل الطلب
+        Route::post('/{id}/update-status', 'updateStatus')->name('updateStatus'); // تحديث الحالة
+    });
 
     Route::get('/admin/dashboard', [DashboardController::class, 'index'])
         ->name('admin.dashboard')

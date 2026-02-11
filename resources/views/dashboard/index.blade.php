@@ -71,11 +71,8 @@
                         <td class="p-4 text-gray-500 text-sm">{{ $order->created_at->diffForHumans() }}</td>
 
                         <td class="p-4 text-center">
-                            <a href="{{ route('admin.orders.edit', $order->id) }}" class="text-blue-600 hover:underline text-xs ml-2">
-                                تعديل الأوردر
-                            </a>
-                            <a href="{{ route('admin.orders.show', $order->id) }}" class="inline-block bg-black text-white px-4 py-1 rounded-lg text-xs hover:bg-gray-800 transition">
-                                عرض التفاصيل
+                            <a href="{{ route('admin.orders.show', $order->id) }}" class="inline-block bg-blue-600 text-white px-4 py-1.5 rounded-lg text-xs hover:bg-blue-700 transition font-bold shadow-sm">
+                                عرض / تعديل 👁️
                             </a>
                         </td>
                     </tr>
