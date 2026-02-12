@@ -72,9 +72,15 @@
                 <div>
                     <h3 class="text-lg font-bold text-gray-800 mb-4 pb-2 border-b">إعدادات التشغيل 🚀</h3>
 
-                    <div class="mb-4">
-                        <label class="block text-sm font-bold text-gray-700 mb-2">مصاريف التوصيل (EGP)</label>
-                        <input type="number" name="delivery_fees" value="{{ $settings['delivery_fees'] ?? '20' }}" class="w-full border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                    <div class="mb-4 grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-2">مصاريف التوصيل (EGP)</label>
+                            <input type="number" name="delivery_fees" value="{{ $settings['delivery_fees'] ?? '20' }}" class="w-full border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-2">سعر الكومبو (EGP)</label>
+                            <input type="number" name="combo_price" value="{{ $settings['combo_price'] ?? '45' }}" class="w-full border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                        </div>
                     </div>
 
                     <!-- روابط السوشيال (Dynamic) -->

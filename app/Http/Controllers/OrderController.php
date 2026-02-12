@@ -22,7 +22,10 @@ class OrderController extends Controller
             $total += ($item['price'] + ($item['is_combo'] ? $item['combo_price'] : 0)) * $item['quantity'];
         }
 
-        return view('checkout.index', compact('cart', 'total'));
+        $deliveryFee = \App\Models\SiteSetting::where('key', 'delivery_fees')->value('value') ?? 20;
+        $grandTotal = $total + $deliveryFee;
+
+        return view('checkout.index', compact('cart', 'total', 'deliveryFee', 'grandTotal'));
     }
 
     // حفظ الأوردر في الداتابيز
@@ -59,12 +62,16 @@ class OrderController extends Controller
             $totalPrice += ($item['price'] + ($item['is_combo'] ? $item['combo_price'] : 0)) * $item['quantity'];
         }
 
+        $deliveryFee = \App\Models\SiteSetting::where('key', 'delivery_fees')->value('value') ?? 20;
+        $grandTotal = $totalPrice + $deliveryFee;
+
         $order = Order::create([
             'user_id' => auth()->id(),
             'customer_name' => $request->customer_name,
             'phone' => $phone,
             'address' => $address,
-            'total_price' => $totalPrice,
+            'total_price' => $grandTotal,
+            'delivery_fee' => $deliveryFee,
             'status' => 'pending',
         ]);
 

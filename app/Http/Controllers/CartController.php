@@ -23,7 +23,10 @@ class CartController extends Controller
             $total += $itemTotal;
         }
 
-        return view('cart.index', compact('cart', 'total'));
+        $deliveryFee = SiteSetting::where('key', 'delivery_fees')->value('value') ?? 20;
+        $grandTotal = $total + $deliveryFee;
+
+        return view('cart.index', compact('cart', 'total', 'deliveryFee', 'grandTotal'));
     }
 
     // إضافة منتج للسلة
@@ -38,7 +41,12 @@ class CartController extends Controller
         $quantity = (int) $request->input('quantity', 1);
         if ($quantity < 1) $quantity = 1;
 
-        $isCombo = $request->has('is_combo'); // Checkbox sending 'on' or nothing
+        $isCombo = $request->has('is_combo'); 
+        
+        // التحقق من قابلية الكومبو
+        if ($isCombo && !$variant->product->can_be_combo) {
+            $isCombo = false;
+        }
 
         $cart = session()->get('cart', []);
         
@@ -57,7 +65,8 @@ class CartController extends Controller
                 "price" => $variant->price,
                 "image" => $variant->product->image,
                 "is_combo" => $isCombo,
-                "combo_price" => $comboPrice
+                "combo_price" => $comboPrice,
+                "can_be_combo" => $variant->product->can_be_combo // نحفظ الحالة عشان التبديل لاحقاً
             ];
         }
 
@@ -94,6 +103,11 @@ class CartController extends Controller
 
         $item = $cart[$cartKey];
         $isComboNew = !$item['is_combo'];
+        
+        // لو بيحاول يعمل كومبو والمنتج مش متاح كـ كومبو، نلغي العملية
+        if ($isComboNew && isset($item['can_be_combo']) && !$item['can_be_combo']) {
+             return redirect()->back()->with('error', 'هذا المنتج غير متاح كـ كومبو');
+        }
         
         // المفتاح الجديد
         $newKey = $item['product_id'] . '_' . $item['variant_id'] . '_' . ($isComboNew ? 'combo' : 'normal');

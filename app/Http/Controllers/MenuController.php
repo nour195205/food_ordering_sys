@@ -12,8 +12,9 @@ class MenuController extends Controller
     {
         // بنجيب كل التصنيفات ومعاها المنتجات والـ variants عشان نوفر في الـ Queries (Eager Loading)
         $categories = Category::with(['products.variants'])->get();
+        $comboPrice = \App\Models\SiteSetting::where('key', 'combo_price')->value('value') ?? 45;
 
-        return view('menu.index', compact('categories'));
+        return view('menu.index', compact('categories', 'comboPrice'));
     }
 
     public function show(Product $product)

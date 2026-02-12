@@ -19,14 +19,16 @@
                     </div>
 
                     <div class="flex flex-col items-center gap-2">
-                        <form action="{{ route('cart.toggleCombo', $key) }}" method="POST">
-                            @csrf
-                            <button type="submit" class="px-3 py-1 rounded-full text-xs font-bold transition {{ $item['is_combo'] ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-600' }}">
-                                {{ $item['is_combo'] ? '✓ Combo Added' : '+ Make it Combo' }}
-                            </button>
-                        </form>
-                        @if($item['is_combo'])
-                            <span class="text-xs text-gray-400">+{{ $item['combo_price'] }} LE</span>
+                        @if($item['can_be_combo'] ?? true)
+                            <form action="{{ route('cart.toggleCombo', $key) }}" method="POST">
+                                @csrf
+                                <button type="submit" class="px-3 py-1 rounded-full text-xs font-bold transition {{ $item['is_combo'] ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-600' }}">
+                                    {{ $item['is_combo'] ? '✓ Combo Added' : '+ Make it Combo' }}
+                                </button>
+                            </form>
+                            @if($item['is_combo'])
+                                <span class="text-xs text-gray-400">+{{ $item['combo_price'] }} LE</span>
+                            @endif
                         @endif
                     </div>
 
@@ -55,12 +57,12 @@
                     </div>
                     <div class="flex justify-between text-gray-600">
                         <span>خدمة التوصيل</span>
-                        <span class="text-green-600">حسب العنوان</span>
+                        <span class="text-green-600">{{ $deliveryFee }} LE</span>
                     </div>
                     <hr>
                     <div class="flex justify-between text-2xl font-black text-gray-900">
                         <span>الإجمالي</span>
-                        <span>{{ $total }} LE</span>
+                        <span>{{ $grandTotal }} LE</span>
                     </div>
                 </div>
                 

@@ -82,9 +82,21 @@
 
         <div class="bg-gray-50 p-6 rounded-xl border">
             <h3 class="font-bold mb-4 border-b pb-2">ملخص الحساب</h3>
-            <div class="flex justify-between text-xl font-bold">
+            
+            <div class="space-y-2 mb-4 text-gray-700">
+                <div class="flex justify-between">
+                    <span>قيمة الطلبات:</span>
+                    <span>{{ $total }} LE</span>
+                </div>
+                <div class="flex justify-between">
+                    <span>خدمة التوصيل:</span>
+                    <span class="text-green-600">{{ $deliveryFee ?? 20 }} LE</span>
+                </div>
+            </div>
+
+            <div class="flex justify-between text-xl font-bold border-t pt-4">
                 <span>الإجمالي الكلي:</span>
-                <span class="text-red-600">{{ $total }} LE</span>
+                <span class="text-red-600">{{ $grandTotal ?? ($total + 20) }} LE</span>
             </div>
         </div>
     </div>

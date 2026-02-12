@@ -39,6 +39,17 @@
                 @endif
             </div>
 
+            <div class="flex gap-6 mb-6">
+                <label class="flex items-center gap-2 cursor-pointer">
+                    <input type="checkbox" name="is_active" class="w-5 h-5" {{ $product->is_active ? 'checked' : '' }}>
+                    <span class="font-bold">متاح للطلب (Active)</span>
+                </label>
+                <label class="flex items-center gap-2 cursor-pointer">
+                    <input type="checkbox" name="can_be_combo" class="w-5 h-5" {{ $product->can_be_combo ? 'checked' : '' }}>
+                    <span class="font-bold">متاح كـ كومبو (Combo Available)</span>
+                </label>
+            </div>
+
             <div class="bg-gray-50 p-4 rounded-xl mb-6">
                 <h3 class="font-bold mb-4">الأحجام والأسعار الحالية</h3>
                 <div id="variants-list">

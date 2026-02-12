@@ -43,16 +43,17 @@ class AdminProductController extends Controller
             'description' => $request->description,
             'base_price' => $basePrice,
             'image' => $request->hasFile('image') ? $request->file('image')->store('products', 'public') : null,
+            'is_active' => $request->has('is_active'),
+            'can_be_combo' => $request->has('can_be_combo'),
         ]);
 
         // 3. حفظ كل الأحجام
-        // ... داخل ميثود store
-foreach ($request->variants as $variant) {
-    $product->variants()->create([
-        'variant_name' => $variant['name'], // غيرنا المفتاح لـ variant_name
-        'price'        => $variant['price'],
-    ]);
-}
+        foreach ($request->variants as $variant) {
+            $product->variants()->create([
+                'variant_name' => $variant['name'], 
+                'price'        => $variant['price'],
+            ]);
+        }
 
         return redirect()->route('admin.products.index')->with('success', 'تم إضافة الوجبة بنجاح 🔥');
     }
@@ -74,32 +75,33 @@ foreach ($request->variants as $variant) {
     ]);
 
     // 1. تحديث البيانات الأساسية والسعر (بناخد سعر أول فاريانت كـ base_price)
-    $product->update([
+    $data = [
         'name' => $request->name,
         'category_id' => $request->category_id,
         'description' => $request->description,
         'base_price' => $request->variants[array_key_first($request->variants)]['price'],
-    ]);
+        'is_active' => $request->has('is_active'),
+        'can_be_combo' => $request->has('can_be_combo'),
+    ];
 
     // 2. تحديث الصورة لو اترفعت واحدة جديدة
     if ($request->hasFile('image')) {
         if ($product->image) {
             Storage::disk('public')->delete($product->image);
         }
-        $product->update([
-            'image' => $request->file('image')->store('products', 'public')
-        ]);
+        $data['image'] = $request->file('image')->store('products', 'public');
     }
+
+    $product->update($data);
 
     // 3. تحديث الأحجام (الطريقة الأضمن هي مسح القديم وإعادة الإضافة)
     $product->variants()->delete(); 
-    // ... داخل ميثود update
-foreach ($request->variants as $variantData) {
-    $product->variants()->create([
-        'variant_name' => $variantData['name'], // غيرنا المفتاح لـ variant_name
-        'price'        => $variantData['price'],
-    ]);
-}
+    foreach ($request->variants as $variantData) {
+        $product->variants()->create([
+            'variant_name' => $variantData['name'], 
+            'price'        => $variantData['price'],
+        ]);
+    }
 
     return redirect()->route('admin.products.index')->with('success', 'تم تحديث الوجبة وأحجامها بنجاح!');
 }
