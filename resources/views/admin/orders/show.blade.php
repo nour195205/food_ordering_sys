@@ -109,8 +109,43 @@
                     </div>
                     <div>
                         <div class="text-xs text-gray-500">الهاتف</div>
-                        <div class="font-bold text-gray-800" dir="ltr">{{ $order->phone }}</div>
-                        <a href="tel:{{ $order->phone }}" class="text-blue-600 text-xs hover:underline">اتصال 📞</a>
+                        @php
+                            $waMessage = "أهلاً بك يا {$order->customer_name}، بخصوص تأكيد طلبك رقم #{$order->id} 👇\n\n";
+                            $waMessage .= "📋 *تفاصيل الطلب:*\n";
+                            
+                            foreach($order->items as $item) {
+                                $itemName = $item->product ? $item->product->name : 'منتج محذوف';
+                                $variant = $item->variant_name ? "({$item->variant_name})" : "";
+                                $combo = $item->is_combo ? "+ كومبو 🍟🥤" : "";
+                                $waMessage .= "- {$itemName} {$variant} x {$item->quantity} {$combo}\n";
+                            }
+
+                            $waMessage .= "\n💰 *الإجمالي:* {$order->total_price} جنيه";
+                            if($order->delivery_fee > 0) {
+                                $waMessage .= " (شامل التوصيل)";
+                            }
+                            
+                            $waMessage .= "\n📍 *العنوان:* {$order->address}";
+                            
+                            if($order->phone_2) {
+                                $waMessage .= "\n📞 *رقم بديل:* {$order->phone_2}";
+                            }
+
+                            $waMessage .= "\n\nهل البيانات دي مظبوطة؟";
+                            
+                            $waUrl = "https://wa.me/2" . $order->phone . "?text=" . urlencode($waMessage);
+                        @endphp
+
+                        <div class="flex gap-3 mt-1">
+                            <a href="tel:{{ $order->phone }}" class="text-blue-600 text-xs hover:underline flex items-center gap-1">
+                                📞 اتصال
+                            </a>
+                            <a href="{{ $waUrl }}" 
+                               target="_blank" 
+                               class="text-green-600 text-xs hover:underline flex items-center gap-1 font-bold">
+                                💬 واتساب (تأكيد الطلب)
+                            </a>
+                        </div>
                     </div>
                     <div>
                         <div class="text-xs text-gray-500">العنوان</div>
