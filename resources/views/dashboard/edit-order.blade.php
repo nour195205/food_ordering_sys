@@ -25,7 +25,7 @@
                             <span class="text-xs text-gray-500">({{ $item->variant_name }})</span>
                         </td>
                         <td class="p-3">
-                            <input type="number" name="items[{{ $item->id }}][quantity]" value="{{ $item->quantity }}" class="w-20 border rounded p-1">
+                            <input type="number" name="items[{{ $item->id }}][quantity]" value="{{ old('items.'.$item->id.'.quantity', $item->quantity) }}" class="w-20 border rounded p-1">
                         </td>
                         <td class="p-3">{{ ($item->unit_price + ($item->is_combo ? $item->combo_price : 0)) * $item->quantity }} LE</td>
                     </tr>

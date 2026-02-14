@@ -4,7 +4,14 @@
 <div class="container mx-auto py-10 px-4">
     <div class="flex justify-between items-center mb-8">
         <h1 class="text-3xl font-bold">المنيو (Products) 📋</h1>
-        <a href="{{ route('admin.products.create') }}" class="bg-black text-white px-6 py-2 rounded-lg">إضافة وجبة</a>
+        
+        <div class="flex gap-4">
+            <form action="{{ route('admin.products.index') }}" method="GET" class="flex gap-2">
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="بحث عن وجبة..." class="border rounded-lg px-4 py-2">
+                <button type="submit" class="bg-gray-100 px-4 py-2 rounded-lg hover:bg-gray-200">بحث</button>
+            </form>
+            <a href="{{ route('admin.products.create') }}" class="bg-black text-white px-6 py-2 rounded-lg">إضافة وجبة</a>
+        </div>
     </div>
 
     <div class="bg-white rounded-2xl shadow-sm overflow-hidden border">

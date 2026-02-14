@@ -31,7 +31,7 @@
                 <label class="block text-lg font-bold text-gray-800 mb-3">الدور الوظيفي</label>
                 <div class="grid grid-cols-3 gap-4">
                     <label class="cursor-pointer">
-                        <input type="radio" name="role" value="user" class="peer sr-only" {{ $staff->role === 'user' ? 'checked' : '' }} onchange="togglePermissions()">
+                        <input type="radio" name="role" value="user" class="peer sr-only" {{ old('role', $staff->role) === 'user' ? 'checked' : '' }} onchange="togglePermissions()">
                         <div class="p-4 rounded-xl border-2 border-gray-200 peer-checked:border-gray-500 peer-checked:bg-gray-50 hover:bg-gray-50 transition-all text-center">
                             <div class="text-2xl mb-2">👤</div>
                             <div class="font-bold text-gray-700">مستخدم عادي</div>
@@ -40,7 +40,7 @@
                     </label>
 
                     <label class="cursor-pointer">
-                        <input type="radio" name="role" value="staff" class="peer sr-only" {{ $staff->role === 'staff' ? 'checked' : '' }} onchange="togglePermissions()">
+                        <input type="radio" name="role" value="staff" class="peer sr-only" {{ old('role', $staff->role) === 'staff' ? 'checked' : '' }} onchange="togglePermissions()">
                         <div class="p-4 rounded-xl border-2 border-gray-200 peer-checked:border-blue-500 peer-checked:bg-blue-50 hover:bg-gray-50 transition-all text-center">
                             <div class="text-2xl mb-2">👨‍🍳</div>
                             <div class="font-bold text-gray-700">موظف (Staff)</div>
@@ -49,7 +49,7 @@
                     </label>
 
                     <label class="cursor-pointer">
-                        <input type="radio" name="role" value="admin" class="peer sr-only" {{ $staff->role === 'admin' ? 'checked' : '' }} onchange="togglePermissions()">
+                        <input type="radio" name="role" value="admin" class="peer sr-only" {{ old('role', $staff->role) === 'admin' ? 'checked' : '' }} onchange="togglePermissions()">
                         <div class="p-4 rounded-xl border-2 border-gray-200 peer-checked:border-purple-500 peer-checked:bg-purple-50 hover:bg-gray-50 transition-all text-center">
                             <div class="text-2xl mb-2">👑</div>
                             <div class="font-bold text-gray-700">مدير (Admin)</div>
@@ -60,7 +60,7 @@
             </div>
 
             <!-- قائمة الصلاحيات (يظهر فقط لو اخترنا Staff) -->
-            <div id="permissions-section" class="mb-8 {{ $staff->role === 'staff' ? '' : 'hidden' }}">
+            <div id="permissions-section" class="mb-8 {{ old('role', $staff->role) === 'staff' ? '' : 'hidden' }}">
                 <label class="block text-lg font-bold text-gray-800 mb-3">تخصيص الصلاحيات</label>
                 <div class="bg-gray-50 rounded-xl p-6 border border-gray-200">
                     <div class="grid grid-cols-2 gap-4">
@@ -68,7 +68,7 @@
                         <label class="flex items-center space-x-3 space-x-reverse cursor-pointer p-3 rounded-lg hover:bg-white transition-colors">
                             <input type="checkbox" name="permissions[]" value="{{ $key }}" 
                                 class="w-5 h-5 text-blue-600 rounded focus:ring-blue-500 border-gray-300"
-                                {{ in_array($key, $userPermissions) ? 'checked' : '' }}>
+                                {{ in_array($key, old('permissions', $userPermissions)) ? 'checked' : '' }}>
                             <span class="text-gray-700 font-medium select-none">{{ $label }}</span>
                         </label>
                         @endforeach

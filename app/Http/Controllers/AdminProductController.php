@@ -10,9 +10,17 @@ use Illuminate\Support\Facades\Storage;
 
 class AdminProductController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::with(['category', 'variants'])->latest()->paginate(10);
+        $query = Product::with(['category', 'variants'])->latest();
+
+        if ($request->has('search')) {
+            $search = $request->get('search');
+            $query->where('name', 'like', "%{$search}%")
+                  ->orWhere('description', 'like', "%{$search}%");
+        }
+
+        $products = $query->paginate(10)->appends(['search' => $search ?? null]);
         return view('admin.products.index', compact('products'));
     }
 

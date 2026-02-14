@@ -12,13 +12,13 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                 <div>
                     <label class="block font-bold">اسم الوجبة</label>
-                    <input type="text" name="name" value="{{ $product->name }}" class="w-full border rounded-lg p-2" required>
+                    <input type="text" name="name" value="{{ old('name', $product->name) }}" class="w-full border rounded-lg p-2" required>
                 </div>
                 <div>
                     <label class="block font-bold">القسم</label>
                     <select name="category_id" class="w-full border rounded-lg p-2">
                         @foreach($categories as $category)
-                            <option value="{{ $category->id }}" {{ $product->category_id == $category->id ? 'selected' : '' }}>
+                            <option value="{{ $category->id }}" {{ old('category_id', $product->category_id) == $category->id ? 'selected' : '' }}>
                                 {{ $category->name }}
                             </option>
                         @endforeach
@@ -28,7 +28,7 @@
 
             <div class="mb-4">
                 <label class="block font-bold">وصف الوجبة</label>
-                <textarea name="description" class="w-full border rounded-lg p-2">{{ $product->description }}</textarea>
+                <textarea name="description" class="w-full border rounded-lg p-2">{{ old('description', $product->description) }}</textarea>
             </div>
 
             <div class="mb-6">
@@ -41,11 +41,11 @@
 
             <div class="flex gap-6 mb-6">
                 <label class="flex items-center gap-2 cursor-pointer">
-                    <input type="checkbox" name="is_active" class="w-5 h-5" {{ $product->is_active ? 'checked' : '' }}>
+                    <input type="checkbox" name="is_active" class="w-5 h-5" {{ old('is_active', $product->is_active) ? 'checked' : '' }}>
                     <span class="font-bold">متاح للطلب (Active)</span>
                 </label>
                 <label class="flex items-center gap-2 cursor-pointer">
-                    <input type="checkbox" name="can_be_combo" class="w-5 h-5" {{ $product->can_be_combo ? 'checked' : '' }}>
+                    <input type="checkbox" name="can_be_combo" class="w-5 h-5" {{ old('can_be_combo', $product->can_be_combo) ? 'checked' : '' }}>
                     <span class="font-bold">متاح كـ كومبو (Combo Available)</span>
                 </label>
             </div>
